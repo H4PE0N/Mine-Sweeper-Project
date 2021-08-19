@@ -22,4 +22,16 @@ typedef struct mine_filed_point
 	int width;
 } Point;
 
+#include "ansi-color-definitions.h"
+
+#include "ansi-escape-sequences.h"
+
+#include "display-content-design.h"	
+
+#include "game-symbol-definitions.h"
+
+#include "game-interface-program.h"
+
+#include "mine-sweeper-program.h"
+
 #endif

@@ -1,7 +1,5 @@
 
 #include "include-define-header.h"
-#include "game-interface-program.h"
-#include "mine-sweeper-program.h"
 
 int main(int argAmount, char* arguments[])
 {
