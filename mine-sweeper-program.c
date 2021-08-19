@@ -1,34 +1,56 @@
 
+#include "include-define-header.h"
+#include "game-interface-program.h"
 #include "mine-sweeper-program.h"
 
 int main(int argAmount, char* arguments[])
 {
 	srand(time(NULL));
 
-	const int height = 10, width = 10, mines = 10;
+	int height, width, mines;
+	if(!input_game_variables(&height, &width, &mines))
+	{
+		variable_input_error();
+		return false;
+	}
 	
 	Square** mineField = create_square_matrix(height, width);
 
 	if(!generate_mine_field(mineField, height, width, mines))
 	{
-		printf("The minefiled could not be created\n");
+		field_create_error(height, width, mines);
 		free(mineField); return false;
 	}
-	else printf("The minefiled was successfully created!\n");
-
-	if(mine_sweeper_game(mineField, height, width))
+	
+	if(!mine_sweeper_game(mineField, height, width))
 	{
-		printf("You have won the minesweeper game!\n");
+		unlock_field_mines(mineField, height, width);
+		mine_sweeper_defeat(mineField, height, width, mines);
 	}
-	else printf("Unfortunately you have lost the game\n");
-
-	unlock_field_mines(mineField, height, width);
-
-	display_mine_field(mineField, height, width);
-
+	else
+	{
+		mine_sweeper_victory(mineField, height, width, mines);
+	}
+	
 	free(mineField);
 
 	return false;
+}
+
+bool mine_sweeper_game(Square** mineField, const int height, const int width)
+{
+	while(!mine_field_cleared(mineField, height, width))
+	{
+		Point position;
+
+		// This function has all interactive and interface code in it
+		if(!game_input_handler(&position, mineField, height, width)) return false;
+
+		if(!position_inside_bounds(position.height, position.width, height, width)) continue;
+
+		if(!unlock_field_square(mineField, position, height, width)) return false;
+	}
+	return true;
 }
 
 void unlock_field_mines(Square** mineField, const int height, const int width)
@@ -42,22 +64,6 @@ void unlock_field_mines(Square** mineField, const int height, const int width)
 			mineField[hIndex][wIndex].isVisable = true;
 		}
 	}
-}
-
-bool mine_sweeper_game(Square** mineField, const int height, const int width)
-{
-	while(!mine_field_cleared(mineField, height, width))
-	{
-		display_mine_field(mineField, height, width);
-
-		Point position;
-		if(!input_field_position(&position)) continue;
-
-		if(!position_inside_bounds(position.height, position.width, height, width)) continue;
-
-		if(!unlock_field_square(mineField, position, height, width)) return false;
-	}
-	return true;
 }
 
 bool unlock_field_square(Square** mineField, Point position, const int height, const int width)
@@ -82,12 +88,6 @@ bool unlock_field_square(Square** mineField, Point position, const int height, c
 		}
 	}
 	return true;
-}
-
-bool input_field_position(Point* position)
-{
-	printf("Input Position: ");
-	return (scanf("%d %d", &position->height, &position->width) == 2);
 }
 
 bool mine_field_cleared(Square** mineField, const int height, const int width)
@@ -168,7 +168,7 @@ void mark_field_adjacents(Square** mineField, const int height, const int width)
 
 			Point position = {hIndex, wIndex};
 			int adjacent = adjacent_field_mines(mineField, position, height, width);
-			
+
 			mineField[hIndex][wIndex].adjacent = adjacent;
 		}
 	}
@@ -208,48 +208,4 @@ Square** create_square_matrix(const int height, const int width)
 		}
 	}
 	return mineField;
-}
-
-void show_number_square(int adjacent)
-{
-	if(adjacent >= 8) printf("\033[%dm8 \033[0m", 31);
-	printf("\033[%dm%d \033[0m", adjacent + 30, adjacent);
-}
-
-void display_mine_field(Square** mineField, const int height, const int width)
-{
-	printf("  ");
-	for(int wIndex = 0; wIndex < width; wIndex = wIndex + 1)
-	{
-		char string[10]; sprintf(string, "%d", wIndex);
-		printf("%c ", string[strlen(string) - 1]);
-	}
-	printf("\n");
-
-	for(int hIndex = 0; hIndex < height; hIndex = hIndex + 1)
-	{
-		char string[10]; sprintf(string, "%d", hIndex);
-		printf("%c ", string[strlen(string) - 1]);
-
-		for(int wIndex = 0; wIndex < width; wIndex = wIndex + 1)
-		{
-			if(mineField[hIndex][wIndex].isVisable == false)
-			{
-				printf("+ ");
-			}
-			else if(mineField[hIndex][wIndex].isThreat)
-			{
-				printf("@ ");
-			}
-			else if(mineField[hIndex][wIndex].adjacent == 0)
-			{
-				printf(". ");
-			}
-			else
-			{
-				show_number_square(mineField[hIndex][wIndex].adjacent);
-			}
-		}
-		printf("\n");
-	}
 }
