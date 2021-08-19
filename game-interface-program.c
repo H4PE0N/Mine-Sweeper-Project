@@ -10,13 +10,13 @@ void variable_input_error(void)
 
 void mine_sweeper_victory(Square** mineField, const int height, const int width, const int mines)
 {
-	printf("%s%s%s\n%s\n", CLEAR_LINE, TEXT_COLOR, GAME_VICTORY_MSG, NONE_COLOR);
+	printf("%s%s%s\n%s%s\n", CLEAR_LINE, TEXT_COLOR, GAME_VICTORY_MSG, NONE_COLOR, CLEAR_LINE);
 	display_mine_field(mineField, height, width);
 }
 
 void mine_sweeper_defeat(Square** mineField, const int height, const int width, const int mines)
 {
-	printf("%s%s%s\n%s\n", CLEAR_LINE, TEXT_COLOR, GAME_DEFEAT_MSG, NONE_COLOR);
+	printf("%s%s%s\n%s%s\n", CLEAR_LINE, TEXT_COLOR, GAME_DEFEAT_MSG, NONE_COLOR, CLEAR_LINE);
 	display_mine_field(mineField, height, width);
 }
 
