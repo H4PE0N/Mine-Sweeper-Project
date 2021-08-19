@@ -2,6 +2,7 @@
 #ifndef ANSI_COLOR_DEFINITIONS
 #define ANSI_COLOR_DEFINITIONS
 
+#define CLEAR_LINE		"\033[2K"
 #define NONE_COLOR		"\033[0m"
 #define BLACK_COLOR		"\033[30m"
 #define RED_COLOR 		"\033[31m"

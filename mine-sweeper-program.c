@@ -112,7 +112,7 @@ bool generate_mine_field(Square** mineField, const int height, const int width, 
 bool generate_field_mines(Square** mineField, const int height, const int width, const int mines)
 {
 	const int total = (height * width);
-	if(mines > total) return false;
+	if(mines >= total) return false;
 
 	Point* indexes = every_matrix_indexes(height, width);
 

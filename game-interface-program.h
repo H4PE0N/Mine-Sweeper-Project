@@ -28,4 +28,10 @@ void display_row_numbers(const int);
 
 char last_integer_letter(const int);
 
+void display_input_before(void);
+
+void display_field_row(Square**, const int, const int);
+
+void show_game_variables(const int, const int, const int);
+
 #endif
