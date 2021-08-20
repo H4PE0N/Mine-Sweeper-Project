@@ -26,4 +26,6 @@ bool mine_sweeper_game(Square**, const int, const int);
 
 bool unlock_field_square(Square**, Point, const int, const int);
 
+char last_integer_letter(const int);
+
 #endif

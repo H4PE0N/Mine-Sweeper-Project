@@ -8,16 +8,16 @@ void variable_input_error(void)
 
 void mine_sweeper_victory(Square** mineField, const int height, const int width, const int mines)
 {
+	unlock_field_mines(mineField, height, width);
 	CLEAR_LINE; printf("You have won the minesweeper game!\n");
-	CLEAR_LINE; printf("\n");
-	display_mine_field(mineField, height, width);
+	CLEAR_LINE; printf("\n"); display_mine_field(mineField, height, width);
 }
 
 void mine_sweeper_defeat(Square** mineField, const int height, const int width, const int mines)
 {
+	unlock_field_mines(mineField, height, width);
 	CLEAR_LINE; printf("Unfortunately you have lost the game\n");
-	CLEAR_LINE; printf("\n");
-	display_mine_field(mineField, height, width);
+	CLEAR_LINE; printf("\n"); display_mine_field(mineField, height, width);
 }
 
 void error_game_variables(const int height, const int width, const int mines)
@@ -41,18 +41,30 @@ void display_input_before(void)
 	CLEAR_LINE; printf("[?]: MINES\t:\n");
 }
 
+bool input_height_variable(int* height)
+{
+	CLEAR_LINE; printf("[$]: HEIGHT\t: "); return scanf("%d", height);
+}
+
+bool input_width_variable(int* width)
+{
+	CLEAR_LINE; printf("[$]: WIDTH\t: "); return scanf("%d", width);
+}
+
+bool input_mines_variable(int* mines)
+{
+	CLEAR_LINE; printf("[$]: MINES\t: "); return scanf("%d", mines);
+}
+
 bool input_game_variables(int* height, int* width, int* mines)
 {
 	display_input_before(); MOVE_UP(3);
 
-	CLEAR_LINE; printf("[$]: HEIGHT\t: ");
-	if(!scanf("%d", height)) return false;
+	if(!input_height_variable(height)) return false;
 
-	CLEAR_LINE; printf("[$]: WIDTH\t: ");
-	if(!scanf("%d", width)) return false;
+	if(!input_width_variable(width)) return false;
 
-	CLEAR_LINE; printf("[$]: MINES\t: ");
-	if(!scanf("%d", mines)) return false;
+	if(!input_mines_variable(mines)) return false;
 
 	MOVE_UP(4); return true;
 }
@@ -92,21 +104,15 @@ void display_row_numbers(const int width)
 
 void display_game_symbol(const Square square)
 {
-	if(!square.isVisable) printf("%c", SQUARE_SYMBOL);
+	if(!square.isVisable) printf("+");
 
-	else if(square.isThreat) printf("%c", THREAT_SYMBOL);
+	else if(square.isThreat) printf("@");
 
-	else if(!square.adjacent) printf("%c", EMPTY_SYMBOL);
+	else if(!square.adjacent) printf(".");
 
 	else printf("%d", square.adjacent);
 	
 	printf(" ");
-}
-
-char last_integer_letter(const int integer)
-{
-	char string[10]; sprintf(string, "%d", integer);
-	return string[strlen(string) - 1];
 }
 
 void display_field_row(Square** mineField, const int width, const int hIndex)

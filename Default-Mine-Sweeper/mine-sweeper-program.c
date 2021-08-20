@@ -22,7 +22,6 @@ int main(int argAmount, char* arguments[])
 	
 	if(!mine_sweeper_game(mineField, height, width))
 	{
-		unlock_field_mines(mineField, height, width);
 		mine_sweeper_defeat(mineField, height, width, mines);
 	}
 	else
@@ -191,6 +190,12 @@ int adjacent_field_mines(Square** mineField, const Point position, const int hei
 bool position_inside_bounds(const int hIndex, const int wIndex, const int height, const int width)
 {
 	return (hIndex >= 0 && hIndex < height) && (wIndex >= 0 && wIndex < width);
+}
+
+char last_integer_letter(const int integer)
+{
+	char string[10]; sprintf(string, "%d", integer);
+	return string[strlen(string) - 1];
 }
 
 Square** create_square_matrix(const int height, const int width)

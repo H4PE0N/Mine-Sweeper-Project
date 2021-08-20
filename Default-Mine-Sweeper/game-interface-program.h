@@ -22,12 +22,16 @@ void variable_input_error(void);
 
 void display_row_numbers(const int);
 
-char last_integer_letter(const int);
-
 void display_input_before(void);
 
 void display_field_row(Square**, const int, const int);
 
 void error_game_variables(const int, const int, const int);
+
+bool input_height_variable(int*);
+
+bool input_width_variable(int*);
+
+bool input_mines_variable(int*);
 
 #endif
