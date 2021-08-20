@@ -3,7 +3,7 @@
 
 void variable_input_error(void)
 {
-	CLEAR_LINE; printf("[?] === INPUT GAME VARIALBES === [?]\n");
+	CLEAR_LINE; printf("Game variables not inputted correctly\n");
 }
 
 void mine_sweeper_victory(Square** mineField, const int height, const int width, const int mines)
