@@ -6,4 +6,6 @@
 
 #define MOVE_RIGHT(lines) printf("\033[%dC", lines)
 
+#define CLEAR_LINE "\033[2K"
+
 #endif
